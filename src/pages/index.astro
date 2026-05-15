@@ -2,32 +2,134 @@
 import PostCard from "@/components/PostCard.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { getPostsByCategory, getSortedProjects } from "@/lib/content";
+import { getPostsByCategory, getProjectUrl, getSortedProjects } from "@/lib/content";
 
-const activityPosts = (await getPostsByCategory("activity")).slice(0, 2);
-const devPosts = (await getPostsByCategory("dev")).slice(0, 3);
-const notices = (await getPostsByCategory("notice")).slice(0, 2);
-const projects = (await getSortedProjects()).slice(0, 3);
+const allActivityPosts = await getPostsByCategory("activity");
+const allDevPosts = await getPostsByCategory("dev");
+const allNotices = await getPostsByCategory("notice");
+const allProjects = await getSortedProjects();
+
+const activityPosts = allActivityPosts.slice(0, 2);
+const devPosts = allDevPosts.slice(0, 3);
+const notices = allNotices.slice(0, 2);
+const projects = allProjects.slice(0, 3);
+const heroProjects = allProjects.map((project) => ({
+  title: project.data.title,
+  description: project.data.description,
+  href: getProjectUrl(project),
+}));
+const fallbackHeroProject = heroProjects[0];
+const heroProjectsJson = JSON.stringify(heroProjects).replaceAll("<", "\\u003c");
 ---
 
 <BaseLayout>
   <section class="hero">
     <div class="container hero-grid">
-      <div>
-        <p class="eyebrow">coderix archive</p>
+      <div class="hero-content">
+        <p class="eyebrow">coderix 아카이브</p>
         <h1>coderix</h1>
         <p class="hero-copy">우리가 만든 것과 배운 것을 기록하는 코딩 동아리</p>
         <p class="hero-copy">
           프로젝트, 스터디, 월간 활동 기록을 차곡차곡 쌓아가는 coderix의 아카이브입니다.
         </p>
+        <div class="hero-actions" aria-label="주요 바로가기">
+          <a class="button primary" href="/posts/activity/">활동 보기</a>
+          <a class="button secondary" href="/projects/">프로젝트 보기</a>
+        </div>
       </div>
-      <aside class="hero-panel" aria-label="아카이브 현황">
+      <aside class="hero-visual" aria-label="coderix 작업 보드">
+        <div class="visual-header">
+          <span>동아리 작업실</span>
+          <strong>2026</strong>
+        </div>
+        <div class="code-window" aria-hidden="true">
+          <div class="window-controls">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="code-lines">
+            <span class="line wide"></span>
+            <span class="line medium mint"></span>
+            <span class="line short"></span>
+            <span class="line wide yellow"></span>
+          </div>
+        </div>
+        <div class="visual-board">
+          <div class="board-card active project-spotlight">
+            <span id="hero-project-label">{fallbackHeroProject ? "오늘의 프로젝트" : "프로젝트"}</span>
+            <strong id="hero-project-title">{fallbackHeroProject?.title ?? "프로젝트 준비 중"}</strong>
+            <p id="hero-project-description">
+              {fallbackHeroProject?.description ?? "프로젝트가 등록되면 새로고침할 때마다 하나씩 소개됩니다."}
+            </p>
+            {
+              fallbackHeroProject && (
+                <a id="hero-project-link" href={fallbackHeroProject.href}>
+                  자세히 보기
+                </a>
+              )
+            }
+          </div>
+        </div>
         <div class="stat-list">
-          <div class="stat"><span>활동 기록</span><strong>{activityPosts.length}</strong></div>
-          <div class="stat"><span>개발 글</span><strong>{devPosts.length}</strong></div>
-          <div class="stat"><span>프로젝트</span><strong>{projects.length}</strong></div>
+          <div class="stat"><span>활동 기록</span><strong>{allActivityPosts.length}</strong></div>
+          <div class="stat"><span>개발 글</span><strong>{allDevPosts.length}</strong></div>
+          <div class="stat"><span>공지</span><strong>{allNotices.length}</strong></div>
+          <div class="stat"><span>프로젝트</span><strong>{allProjects.length}</strong></div>
         </div>
       </aside>
+    </div>
+    <script is:inline type="application/json" id="hero-projects" set:html={heroProjectsJson}></script>
+    <script>
+      const projectsData = document.querySelector("#hero-projects");
+      const title = document.querySelector("#hero-project-title");
+      const description = document.querySelector("#hero-project-description");
+      const label = document.querySelector("#hero-project-label");
+      let link = document.querySelector("#hero-project-link");
+
+      if (projectsData?.textContent && title && description) {
+        const projects = JSON.parse(projectsData.textContent) as Array<{
+          title: string;
+          description: string;
+          href: string;
+        }>;
+        const project = projects[Math.floor(Math.random() * projects.length)];
+
+        if (project) {
+          title.textContent = project.title;
+          description.textContent = project.description;
+          if (label) label.textContent = "오늘의 프로젝트";
+
+          if (!link) {
+            link = document.createElement("a");
+            link.id = "hero-project-link";
+            title.parentElement?.append(link);
+          }
+
+          link.textContent = "자세히 보기";
+          link.setAttribute("href", project.href);
+        }
+      }
+    </script>
+  </section>
+
+  <section class="feature-strip" aria-label="coderix 기록 분류">
+    <div class="container feature-grid">
+      <a class="feature-item" href="/posts/activity/">
+        <span class="feature-icon">01</span>
+        <strong>활동 기록</strong>
+        <span>모임과 스터디 흐름을 월별로 정리합니다.</span>
+      </a>
+      <a class="feature-item" href="/posts/dev/">
+        <span class="feature-icon mint">02</span>
+        <strong>개발 글</strong>
+        <span>배운 내용과 문제 해결 과정을 남깁니다.</span>
+      </a>
+      <a class="feature-item" href="/projects/">
+        <span class="feature-icon yellow">03</span>
+        <strong>프로젝트</strong>
+        <span>부원들이 만든 결과물을 한곳에 모읍니다.</span>
+      </a>
     </div>
   </section>
 
@@ -83,4 +185,3 @@ const projects = (await getSortedProjects()).slice(0, 3);
     </div>
   </section>
 </BaseLayout>
-
