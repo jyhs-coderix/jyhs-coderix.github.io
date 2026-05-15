@@ -3,6 +3,7 @@ title: "코드릭스 웹사이트 제작"
 description: "코드릭스 동아리의 공식 아카이브 홈페이지를 제작했습니다."
 github: "https://github.com/jyhs-coderix/jyhs-coderix.github.io"
 date: "2026-05-15"
+comments: true
 ---
 
 ## 소개
