@@ -1,0 +1,31 @@
+---
+import { formatDate, getAuthors, getPostUrl } from "@/lib/content";
+import type { Post } from "@/lib/content";
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const authors = getAuthors(post);
+---
+
+<a class="card" href={getPostUrl(post)}>
+  <div class="meta">
+    <span>{formatDate(post.data.date)}</span>
+    <span>{post.data.category}</span>
+    {authors.length > 0 && <span>{authors.join(", ")}</span>}
+  </div>
+  <h3>{post.data.title}</h3>
+  <p>{post.data.description}</p>
+  {
+    post.data.tags.length > 0 && (
+      <div class="tag-list" aria-label="태그">
+        {post.data.tags.map((tag) => (
+          <span class="tag">{tag}</span>
+        ))}
+      </div>
+    )
+  }
+</a>
+

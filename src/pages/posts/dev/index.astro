@@ -1,0 +1,20 @@
+---
+import PostCard from "@/components/PostCard.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getPostsByCategory } from "@/lib/content";
+
+const posts = await getPostsByCategory("dev");
+---
+
+<BaseLayout title="개발 글" description="coderix 개발 글">
+  <section class="page-head container">
+    <h1>개발 글</h1>
+    <p>부원들이 학습한 내용, 프로젝트 개발기, 문제 해결 기록을 남깁니다.</p>
+  </section>
+  <section class="section">
+    <div class="container">
+      {posts.length ? <div class="list">{posts.map((post) => <PostCard post={post} />)}</div> : <p class="empty">아직 개발 글이 없습니다.</p>}
+    </div>
+  </section>
+</BaseLayout>
+

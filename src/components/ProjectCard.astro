@@ -1,0 +1,23 @@
+---
+import { formatDate, getProjectUrl } from "@/lib/content";
+import type { Project } from "@/lib/content";
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<article class="card">
+  <div class="meta">
+    <span>{formatDate(project.data.date)}</span>
+    <span>프로젝트</span>
+  </div>
+  <h3><a href={getProjectUrl(project)}>{project.data.title}</a></h3>
+  <p>{project.data.description}</p>
+  <div class="tag-list">
+    <a class="tag" href={project.data.github} target="_blank" rel="noreferrer">GitHub</a>
+  </div>
+</article>
+

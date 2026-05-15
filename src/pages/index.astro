@@ -1,0 +1,86 @@
+---
+import PostCard from "@/components/PostCard.astro";
+import ProjectCard from "@/components/ProjectCard.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getPostsByCategory, getSortedProjects } from "@/lib/content";
+
+const activityPosts = (await getPostsByCategory("activity")).slice(0, 2);
+const devPosts = (await getPostsByCategory("dev")).slice(0, 3);
+const notices = (await getPostsByCategory("notice")).slice(0, 2);
+const projects = (await getSortedProjects()).slice(0, 3);
+---
+
+<BaseLayout>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <p class="eyebrow">coderix archive</p>
+        <h1>coderix</h1>
+        <p class="hero-copy">우리가 만든 것과 배운 것을 기록하는 코딩 동아리</p>
+        <p class="hero-copy">
+          프로젝트, 스터디, 월간 활동 기록을 차곡차곡 쌓아가는 coderix의 아카이브입니다.
+        </p>
+      </div>
+      <aside class="hero-panel" aria-label="아카이브 현황">
+        <div class="stat-list">
+          <div class="stat"><span>활동 기록</span><strong>{activityPosts.length}</strong></div>
+          <div class="stat"><span>개발 글</span><strong>{devPosts.length}</strong></div>
+          <div class="stat"><span>프로젝트</span><strong>{projects.length}</strong></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>최근 활동 기록</h2>
+          <p>매달 남기는 coderix의 활동 흐름입니다.</p>
+        </div>
+        <a href="/posts/activity/">전체 보기</a>
+      </div>
+      {activityPosts.length ? <div class="grid">{activityPosts.map((post) => <PostCard post={post} />)}</div> : <p class="empty">아직 활동 기록이 없습니다.</p>}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>개발 글</h2>
+          <p>부원들이 배운 것과 해결한 문제를 정리합니다.</p>
+        </div>
+        <a href="/posts/dev/">전체 보기</a>
+      </div>
+      {devPosts.length ? <div class="grid">{devPosts.map((post) => <PostCard post={post} />)}</div> : <p class="empty">아직 개발 글이 없습니다.</p>}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>공지</h2>
+          <p>운영진이 남기는 공식 안내입니다.</p>
+        </div>
+        <a href="/posts/notice/">전체 보기</a>
+      </div>
+      {notices.length ? <div class="grid">{notices.map((post) => <PostCard post={post} />)}</div> : <p class="empty">아직 공지가 없습니다.</p>}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>프로젝트</h2>
+          <p>coderix가 만든 결과물을 모아 둡니다.</p>
+        </div>
+        <a href="/projects/">전체 보기</a>
+      </div>
+      {projects.length ? <div class="grid">{projects.map((project) => <ProjectCard project={project} />)}</div> : <p class="empty">아직 등록된 프로젝트가 없습니다.</p>}
+    </div>
+  </section>
+</BaseLayout>
+

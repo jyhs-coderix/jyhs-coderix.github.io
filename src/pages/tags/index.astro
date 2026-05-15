@@ -1,0 +1,30 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getSortedPosts, uniqueTags } from "@/lib/content";
+
+const posts = await getSortedPosts();
+const tags = uniqueTags(posts);
+---
+
+<BaseLayout title="태그" description="coderix 태그 목록">
+  <section class="page-head container">
+    <h1>태그</h1>
+    <p>기록을 주제별로 다시 찾아볼 수 있습니다.</p>
+  </section>
+  <section class="section">
+    <div class="container">
+      {
+        tags.length ? (
+          <div class="tag-list">
+            {tags.map((tag) => (
+              <a class="tag" href={`/tags/${encodeURIComponent(tag)}/`}>{tag}</a>
+            ))}
+          </div>
+        ) : (
+          <p class="empty">아직 등록된 태그가 없습니다.</p>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>
+

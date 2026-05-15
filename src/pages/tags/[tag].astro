@@ -1,0 +1,31 @@
+---
+import PostCard from "@/components/PostCard.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getSortedPosts, uniqueTags } from "@/lib/content";
+
+export async function getStaticPaths() {
+  const posts = await getSortedPosts();
+  return uniqueTags(posts).map((tag) => ({
+    params: { tag },
+    props: {
+      tag,
+      posts: posts.filter((post) => post.data.tags.includes(tag)),
+    },
+  }));
+}
+
+const { tag, posts } = Astro.props;
+---
+
+<BaseLayout title={`태그: ${tag}`} description={`${tag} 태그 글 목록`}>
+  <section class="page-head container">
+    <h1>{tag}</h1>
+    <p>이 태그가 붙은 기록입니다.</p>
+  </section>
+  <section class="section">
+    <div class="container">
+      {posts.length ? <div class="list">{posts.map((post) => <PostCard post={post} />)}</div> : <p class="empty">이 태그의 글이 없습니다.</p>}
+    </div>
+  </section>
+</BaseLayout>
+

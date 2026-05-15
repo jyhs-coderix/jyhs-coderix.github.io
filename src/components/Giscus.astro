@@ -1,0 +1,37 @@
+---
+const repo = "jyhs-coderix/jyhs-coderix.github.io";
+const repoId = import.meta.env.PUBLIC_GISCUS_REPO_ID;
+const category = import.meta.env.PUBLIC_GISCUS_CATEGORY ?? "General";
+const categoryId = import.meta.env.PUBLIC_GISCUS_CATEGORY_ID;
+---
+
+<section class="comments" aria-label="댓글">
+  <h2>댓글</h2>
+  {
+    repoId && categoryId ? (
+      <script
+        is:inline
+        src="https://giscus.app/client.js"
+        data-repo={repo}
+        data-repo-id={repoId}
+        data-category={category}
+        data-category-id={categoryId}
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="light"
+        data-lang="ko"
+        crossorigin="anonymous"
+        async
+      />
+    ) : (
+      <p class="empty">
+        Giscus 설정 후 댓글이 표시됩니다. 저장소 Discussions를 켜고
+        <code>PUBLIC_GISCUS_REPO_ID</code>, <code>PUBLIC_GISCUS_CATEGORY_ID</code>
+        값을 GitHub Pages 빌드 환경에 추가하세요.
+      </p>
+    )
+  }
+</section>

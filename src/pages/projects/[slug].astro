@@ -1,0 +1,36 @@
+---
+import { render } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { formatDate, getSortedProjects } from "@/lib/content";
+
+export async function getStaticPaths() {
+  const projects = await getSortedProjects();
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<BaseLayout title={project.data.title} description={project.data.description}>
+  <article class="article">
+    <header class="article-header">
+      <div class="meta">
+        <span>{formatDate(project.data.date)}</span>
+        <span>프로젝트</span>
+      </div>
+      <h1>{project.data.title}</h1>
+      <p>{project.data.description}</p>
+      <div class="tag-list">
+        <a class="tag" href={project.data.github} target="_blank" rel="noreferrer">GitHub</a>
+      </div>
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+

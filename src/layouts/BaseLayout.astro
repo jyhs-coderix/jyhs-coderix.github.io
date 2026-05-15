@@ -1,0 +1,46 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const siteName = "coderix";
+const { title, description = "우리가 만든 것과 배운 것을 기록하는 코딩 동아리" } = Astro.props;
+const pageTitle = title ? `${title} | ${siteName}` : siteName;
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav container" aria-label="주요 메뉴">
+        <a class="brand" href="/">coderix</a>
+        <div class="nav-links">
+          <a href="/posts/activity/">활동 기록</a>
+          <a href="/posts/dev/">개발 글</a>
+          <a href="/posts/notice/">공지</a>
+          <a href="/projects/">프로젝트</a>
+          <a href="/search/">검색</a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <span>coderix</span>
+        <span>우리가 만든 것과 배운 것을 기록하는 코딩 동아리</span>
+      </div>
+    </footer>
+  </body>
+</html>

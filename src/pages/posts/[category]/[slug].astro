@@ -1,0 +1,53 @@
+---
+import { render } from "astro:content";
+import Giscus from "@/components/Giscus.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import {
+  formatDate,
+  getAuthors,
+  getCategorySlug,
+  getPostSlug,
+  getSortedPosts,
+  shouldShowComments,
+} from "@/lib/content";
+
+export async function getStaticPaths() {
+  const posts = await getSortedPosts();
+  return posts.map((post) => ({
+    params: { category: getCategorySlug(post), slug: getPostSlug(post) },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const authors = getAuthors(post);
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <article class="article">
+    <header class="article-header">
+      <div class="meta">
+        <span>{formatDate(post.data.date)}</span>
+        <span>{post.data.category}</span>
+        {authors.length > 0 && <span>{authors.join(", ")}</span>}
+      </div>
+      <h1>{post.data.title}</h1>
+      <p>{post.data.description}</p>
+      {
+        post.data.tags.length > 0 && (
+          <div class="tag-list" aria-label="태그">
+            {post.data.tags.map((tag) => (
+              <a class="tag" href={`/tags/${encodeURIComponent(tag)}/`}>{tag}</a>
+            ))}
+          </div>
+        )
+      }
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+    {shouldShowComments(post) && <Giscus />}
+  </article>
+</BaseLayout>
+

@@ -1,0 +1,102 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="검색" description="coderix 아카이브 검색">
+  <section class="page-head container">
+    <h1>검색</h1>
+    <p>제목, 설명, 태그, 작성자, 본문 일부를 기준으로 기록을 찾습니다.</p>
+  </section>
+  <section class="section">
+    <div class="container">
+      <input class="search-box" id="search-input" type="search" placeholder="검색어를 입력하세요" autocomplete="off" />
+      <div id="search-results" class="list" style="margin-top: 18px;"></div>
+    </div>
+  </section>
+  <script>
+    interface SearchItem {
+      type: string;
+      title: string;
+      description: string;
+      href: string;
+      date: string;
+      tags?: string[];
+      authors?: string[];
+      body?: string;
+    }
+
+    const input = document.querySelector("#search-input");
+    const results = document.querySelector("#search-results");
+    const response = await fetch("/search-index.json");
+    const items = (await response.json()) as SearchItem[];
+
+    function formatDate(value: string) {
+      return new Intl.DateTimeFormat("ko-KR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      })
+        .format(new Date(value))
+        .replaceAll(". ", ".")
+        .replace(/\.$/, "");
+    }
+
+    function escapeHtml(value: string) {
+      return value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function render(matches: SearchItem[]) {
+      if (!results) return;
+      if (!matches.length) {
+        results.innerHTML = '<p class="empty">검색 결과가 없습니다.</p>';
+        return;
+      }
+      results.innerHTML = matches
+        .map(
+          (item) => `
+            <a class="list-item" href="${item.href}">
+              <div class="meta">
+                <span>${formatDate(item.date)}</span>
+                <span>${escapeHtml(item.type)}</span>
+              </div>
+              <h3>${escapeHtml(item.title)}</h3>
+              <p>${escapeHtml(item.description)}</p>
+            </a>
+          `,
+        )
+        .join("");
+    }
+
+    function search(query: string) {
+      const normalized = query.trim().toLowerCase();
+      if (!normalized) {
+        render(items.slice(0, 8));
+        return;
+      }
+      const matches = items.filter((item) =>
+        [
+          item.title,
+          item.description,
+          item.type,
+          item.date,
+          item.body,
+          ...(item.tags ?? []),
+          ...(item.authors ?? []),
+        ]
+          .join(" ")
+          .toLowerCase()
+          .includes(normalized),
+      );
+      render(matches.slice(0, 20));
+    }
+
+    if (input instanceof HTMLInputElement) {
+      search("");
+      input.addEventListener("input", () => search(input.value));
+    }
+  </script>
+</BaseLayout>
