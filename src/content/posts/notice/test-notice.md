@@ -6,7 +6,7 @@ date: "2026-05-15"
 author: "운영진"
 tags: ["공지"]
 comments: false
-draft: true
+draft: false
 ---
 
 ## 테스트
