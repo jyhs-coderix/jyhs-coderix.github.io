@@ -379,7 +379,7 @@ Default member writing workflow:
 ```txt
 member submits GitHub Issue Form
 -> operator reviews issue
--> operator applies status: draft-requested label
+-> operator applies 초안 생성 label
 -> GitHub Actions creates Markdown and downloads GitHub issue images
 -> GitHub Actions opens a Draft PR
 -> operators review the Draft PR checklist
@@ -396,13 +396,13 @@ Issue Forms:
 Automation labels:
 
 ```txt
-type: activity
-type: dev
-type: project
-status: draft-requested
+종류: 활동 기록
+종류: 개발 글
+종류: 프로젝트
+초안 생성
 ```
 
-The `type:*` label is attached by the Issue Form. The `status: draft-requested` label is attached only by operators or web maintainers after initial content review.
+The `종류:*` label is attached by the Issue Form. The `초안 생성` label is attached only by operators or web maintainers after initial content review.
 
 The automation creates `draft: false` content because Draft PR state controls publication before merge. Automatically generated content must include `sourceIssue`.
 
@@ -431,6 +431,14 @@ Project links:
 - Issue Form accepts links as `label - URL`, one per line
 - Automation converts project links to `links`
 - Maximum 5 links per project
+
+Simplified Issue Form fields:
+
+- Activity: `제목`, `요약`, `날짜`, `작성자`, `추천 태그`, `본문`, `이미지 첨부`, `공개 확인`
+- Development post: `제목`, `요약`, `날짜`, `작성자`, `추천 태그`, `기술 수준 / 대상 독자`, `본문`, `이미지 첨부`, `공개 확인`
+- Project: `제목`, `요약`, `날짜`, `작성자`, `추천 태그`, `프로젝트 링크`, `본문`, `이미지 첨부`, `공개 확인`
+
+The automation reads `본문` as the primary body source. Operators can reshape that text into richer Markdown sections inside the generated Draft PR.
 
 GitHub token note:
 

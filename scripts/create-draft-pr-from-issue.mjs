@@ -5,13 +5,13 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const TYPE_LABELS = {
-  "type: activity": "activity",
-  "type: dev": "dev",
-  "type: project": "project",
+  "종류: 활동 기록": "activity",
+  "종류: 개발 글": "dev",
+  "종류: 프로젝트": "project",
 };
 
 const TYPE_LABEL_NAMES = Object.keys(TYPE_LABELS);
-const DRAFT_REQUEST_LABEL = "status: draft-requested";
+const DRAFT_REQUEST_LABEL = "초안 생성";
 const BASE_BRANCH = process.env.BASE_BRANCH ?? "main";
 const MAX_IMAGES = 10;
 const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
@@ -60,10 +60,7 @@ async function createDraft(contentType, issue, sections) {
   const description = requiredSection(sections, "요약");
   const date = parseDate(requiredSection(sections, "날짜"));
   const authors = parseList(requiredSection(sections, "작성자"));
-  const tags = unique([
-    ...parseCheckedItems(section(sections, "추천 태그")),
-    ...parseList(section(sections, "기타 태그")),
-  ]);
+  const tags = unique(parseCheckedItems(section(sections, "추천 태그")));
   const imageLinks = extractImageLinks(issue.body ?? "");
   const slug = createSlug(contentType, date, issue.number);
   const imageDir = imageDirectory(contentType, date, slug);
@@ -82,11 +79,7 @@ async function createDraft(contentType, issue, sections) {
 
 function createActivityDraft({ issue, title, description, date, authors, tags, slug, images, sections }) {
   const body = markdownSections([
-    ["이번 달 요약", requiredSection(sections, "이번 활동 요약")],
-    ["진행한 활동", section(sections, "진행한 활동")],
-    ["만든 것 / 배운 것", section(sections, "만든 것 / 배운 것")],
-    ["기억할 점", section(sections, "기억할 점")],
-    ["다음 달 계획", section(sections, "다음 계획")],
+    ["본문", requiredSection(sections, "본문")],
     ["사진", imageMarkdown(images)],
   ]);
 
@@ -121,11 +114,7 @@ function createDevDraft({ issue, title, description, date, authors, tags, slug, 
 
   const body = markdownSections([
     ["대상 독자", audience],
-    ["개요", requiredSection(sections, "개요")],
-    ["문제 또는 목표", section(sections, "문제 또는 목표")],
-    ["해결 과정", section(sections, "해결 과정")],
-    ["배운 점", section(sections, "배운 점")],
-    ["정리", section(sections, "정리")],
+    ["본문", requiredSection(sections, "본문")],
     ["사진", imageMarkdown(images)],
   ]);
 
@@ -142,15 +131,9 @@ function createDevDraft({ issue, title, description, date, authors, tags, slug, 
 }
 
 function createProjectDraft({ issue, title, description, date, authors, tags, slug, images, sections }) {
-  const audience = section(sections, "기술 수준 / 대상 독자");
   const links = parseProjectLinks(section(sections, "프로젝트 링크"));
   const body = markdownSections([
-    ["대상 독자", audience],
-    ["소개", requiredSection(sections, "소개")],
-    ["주요 기능", section(sections, "주요 기능")],
-    ["사용 기술", section(sections, "사용 기술")],
-    ["제작 과정", section(sections, "제작 과정")],
-    ["배운 점", section(sections, "배운 점")],
+    ["본문", requiredSection(sections, "본문")],
     ["사진", imageMarkdown(images)],
   ]);
 

@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   create-draft:
-    if: "${{ github.event_name == 'workflow_dispatch' || github.event.label.name == 'status: draft-requested' }}"
+    if: "${{ github.event_name == 'workflow_dispatch' || github.event.label.name == '초안 생성' }}"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
