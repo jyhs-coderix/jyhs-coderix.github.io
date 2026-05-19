@@ -4,13 +4,18 @@ import { Buffer } from "node:buffer";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-const TYPE_LABELS = {
-  "종류: 활동 기록": "activity",
-  "종류: 개발 글": "dev",
-  "종류: 프로젝트": "project",
+const ISSUE_TYPES = {
+  "활동 기록": "activity",
+  "개발 글": "dev",
+  "프로젝트": "project",
 };
 
-const TYPE_LABEL_NAMES = Object.keys(TYPE_LABELS);
+const TITLE_PREFIX_TYPES = {
+  "[활동 기록]": "activity",
+  "[개발 글]": "dev",
+  "[프로젝트]": "project",
+};
+
 const DRAFT_REQUEST_LABEL = "초안 생성";
 const BASE_BRANCH = process.env.BASE_BRANCH ?? "main";
 const MAX_IMAGES = 10;
@@ -30,17 +35,12 @@ const apiBase = "https://api.github.com";
 async function main() {
   const issue = await api(`/repos/${owner}/${repo}/issues/${issueNumber}`);
   const labels = issue.labels.map((label) => (typeof label === "string" ? label : label.name));
-  const typeLabels = labels.filter((label) => TYPE_LABEL_NAMES.includes(label));
 
   if (!labels.includes(DRAFT_REQUEST_LABEL)) {
     throw new Error(`Issue #${issueNumber} needs the ${JSON.stringify(DRAFT_REQUEST_LABEL)} label.`);
   }
 
-  if (typeLabels.length !== 1) {
-    throw new Error(`Issue #${issueNumber} needs exactly one type label: ${TYPE_LABEL_NAMES.join(", ")}.`);
-  }
-
-  const contentType = TYPE_LABELS[typeLabels[0]];
+  const contentType = getIssueContentType(issue);
   const sections = parseSections(issue.body ?? "");
   const draft = await createDraft(contentType, issue, sections);
 
@@ -53,6 +53,17 @@ async function main() {
   await commentOnIssue(issue.number, pullRequest, draft);
 
   console.log(`Created or updated draft PR: ${pullRequest.html_url}`);
+}
+
+function getIssueContentType(issue) {
+  const issueTypeName = issue.type?.name ?? issue.issue_type?.name ?? issue.type;
+  if (ISSUE_TYPES[issueTypeName]) return ISSUE_TYPES[issueTypeName];
+
+  const title = issue.title ?? "";
+  const prefix = Object.keys(TITLE_PREFIX_TYPES).find((candidate) => title.startsWith(candidate));
+  if (prefix) return TITLE_PREFIX_TYPES[prefix];
+
+  throw new Error(`Issue #${issue.number} needs one issue type: ${Object.keys(ISSUE_TYPES).join(", ")}.`);
 }
 
 async function createDraft(contentType, issue, sections) {

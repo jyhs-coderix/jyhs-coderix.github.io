@@ -165,14 +165,23 @@ GitHub - https://github.com/jyhs-coderix/example
 
 `초안 생성` 라벨은 운영진이나 웹 담당자만 붙입니다. 이 라벨은 "이 이슈를 홈페이지 글 초안으로 만들어도 된다"는 승인 버튼입니다.
 
-자동화용 라벨:
+Issue Type:
 
 ```txt
-종류: 활동 기록
-종류: 개발 글
-종류: 프로젝트
+활동 기록
+개발 글
+프로젝트
+```
+
+위 3개 Issue Type은 GitHub 조직/저장소 설정에서 먼저 만들어져 있어야 합니다. GitHub Issue Form의 `type` 값은 기존 Issue Type이 있을 때 자동으로 붙습니다.
+
+운영진용 라벨:
+
+```txt
 초안 생성
 ```
+
+`활동 기록`, `개발 글`, `프로젝트`는 Issue Form이 자동으로 설정합니다. 운영진은 검수 후 `초안 생성` 라벨만 붙이면 됩니다.
 
 자동 PR 생성 workflow가 PR 빌드까지 자연스럽게 이어지게 하려면 repository secret `DRAFT_PR_TOKEN`을 설정하는 것을 권장합니다. 없으면 기본 `GITHUB_TOKEN`으로 동작하지만, GitHub 설정에 따라 PR 생성 후 별도 pull request workflow가 자동 실행되지 않을 수 있습니다.
 
