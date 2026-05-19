@@ -1,5 +1,5 @@
-name: 개발 글 제보
-description: 기술 글, 프로젝트 개발기, 문제 해결 기록을 홈페이지 글로 제보합니다.
+name: 개발 글 작성
+description: 기술 글, 프로젝트 개발기, 문제 해결 기록을 홈페이지 글로 작성합니다.
 title: "[개발 글] "
 body:
   - type: markdown
@@ -42,20 +42,20 @@ body:
     attributes:
       label: 추천 태그
       options:
-        - label: 월간기록
-        - label: 스터디
-        - label: 프로젝트
-        - label: 행사
-        - label: 회고
-        - label: Python
-        - label: JavaScript
-        - label: HTML/CSS
-        - label: React
-        - label: 아두이노
-        - label: AI
-        - label: 웹
-        - label: 앱
-        - label: 게임
+        - label: 월간기록 (monthly)
+        - label: 스터디 (study)
+        - label: 프로젝트 (project)
+        - label: 행사 (event)
+        - label: 회고 (retrospective)
+        - label: Python (python)
+        - label: JavaScript (javascript)
+        - label: HTML/CSS (html-css)
+        - label: React (react)
+        - label: 아두이노 (arduino)
+        - label: AI (ai)
+        - label: 웹 (web)
+        - label: 앱 (app)
+        - label: 게임 (game)
   - type: input
     id: audience
     attributes:
@@ -85,9 +85,9 @@ body:
     attributes:
       label: 공개 확인
       options:
-        - label: 이 글에 공개되면 안 되는 개인정보가 없음을 확인했습니다.
+        - label: 개인정보 없음 확인 (privacy)
           required: true
-        - label: 첨부한 사진이 있다면 사진 속 인물의 공개 동의를 받았습니다.
+        - label: 사진 공개 동의 확인 (photo)
           required: true
-        - label: 제출한 내용이 동아리 홈페이지에 공개될 수 있음을 이해했습니다.
+        - label: 홈페이지 공개 가능 확인 (publish)
           required: true

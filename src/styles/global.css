@@ -672,6 +672,123 @@ h1 {
   outline: 0;
 }
 
+.submit-section {
+  padding-top: 18px;
+}
+
+.submit-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 24px;
+  align-items: start;
+}
+
+.submit-form,
+.submit-panel {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow);
+}
+
+.submit-form {
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+}
+
+.submit-panel {
+  padding: 20px;
+}
+
+.submit-panel h2 {
+  font-size: 1.2rem;
+}
+
+.submit-panel ol {
+  padding-left: 22px;
+}
+
+.submit-panel p,
+.submit-panel li {
+  color: var(--muted);
+}
+
+.submit-form fieldset {
+  min-width: 0;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.submit-form legend,
+.submit-form label {
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.submit-form input,
+.submit-form textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-weight: 500;
+  margin-top: 6px;
+  padding: 10px 12px;
+}
+
+.submit-form input:focus,
+.submit-form textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+  outline: 0;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.segmented,
+.checkbox-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.segmented label,
+.checkbox-grid label,
+.check-stack label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 700;
+  padding: 8px 10px;
+}
+
+.segmented input,
+.checkbox-grid input,
+.check-stack input {
+  width: auto;
+  margin: 0;
+}
+
+.check-stack {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+}
+
 .site-footer {
   margin-top: auto;
   border-top: 1px solid var(--border);
@@ -711,6 +828,7 @@ h1 {
 
   .hero-grid,
   .feature-grid,
+  .submit-grid,
   .grid {
     grid-template-columns: 1fr;
   }
@@ -740,6 +858,10 @@ h1 {
   }
 
   .stat-list {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
     grid-template-columns: 1fr;
   }
 }

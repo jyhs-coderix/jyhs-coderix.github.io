@@ -268,6 +268,7 @@ function parseCheckedItems(value) {
   return value
     .split("\n")
     .map((line) => line.match(/^-\s+\[[xX]\]\s+(.+)$/)?.[1]?.trim())
+    .map((item) => item?.replace(/\s+\([a-z0-9-]+\)$/i, "").trim())
     .filter(Boolean);
 }
 
