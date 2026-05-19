@@ -63,7 +63,9 @@ function getIssueContentType(issue) {
   const prefix = Object.keys(TITLE_PREFIX_TYPES).find((candidate) => title.startsWith(candidate));
   if (prefix) return TITLE_PREFIX_TYPES[prefix];
 
-  throw new Error(`Issue #${issue.number} needs one issue type: ${Object.keys(ISSUE_TYPES).join(", ")}.`);
+  throw new Error(
+    `Issue #${issue.number} needs one title prefix or issue type: ${Object.keys(TITLE_PREFIX_TYPES).join(", ")}.`,
+  );
 }
 
 async function createDraft(contentType, issue, sections) {

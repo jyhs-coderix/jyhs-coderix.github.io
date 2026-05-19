@@ -1,7 +1,6 @@
 name: 활동 기록 제보
 description: 동아리 활동, 스터디, 행사, 회고를 홈페이지 글로 제보합니다.
 title: "[활동 기록] "
-type: "활동 기록"
 body:
   - type: markdown
     attributes:
