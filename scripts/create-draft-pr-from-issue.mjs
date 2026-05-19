@@ -48,7 +48,8 @@ async function main() {
   runBuildCheck();
 
   const branchName = `content/issue-${issue.number}`;
-  await createCommit(branchName, draft.files, `Create draft content from issue #${issue.number}`);
+  const commit = await createCommit(branchName, draft.files, `Create draft content from issue #${issue.number}`);
+  await reportBuildStatus(commit.sha, issue.number);
   const pullRequest = await createOrUpdatePullRequest(branchName, draft);
   await commentOnIssue(issue.number, pullRequest, draft);
 
@@ -452,6 +453,19 @@ async function createCommit(branchName, files, message) {
       body: { ref: `refs/heads/${branchName}`, sha: commit.sha },
     });
   }
+
+  return commit;
+}
+
+async function reportBuildStatus(sha, issue) {
+  await api(`/repos/${owner}/${repo}/statuses/${sha}`, {
+    method: "POST",
+    body: {
+      state: "success",
+      context: "build",
+      description: `npm run build passed while creating draft content from issue #${issue}`,
+    },
+  });
 }
 
 async function createTree(baseTreeSha, files) {
