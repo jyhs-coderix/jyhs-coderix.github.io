@@ -393,7 +393,7 @@ Issue Forms:
 - `개발 글 제보`
 - `프로젝트 제보`
 
-Issue types:
+Content categories:
 
 ```txt
 활동 기록
@@ -401,7 +401,7 @@ Issue types:
 프로젝트
 ```
 
-These issue types must exist in GitHub before Issue Forms can attach them automatically.
+Issue Forms set the matching title prefix, for example `[개발 글]`.
 
 Automation label:
 
@@ -409,7 +409,7 @@ Automation label:
 초안 생성
 ```
 
-The issue type is attached by the Issue Form. The `초안 생성` label is attached only by operators or web maintainers after initial content review.
+The `초안 생성` label is attached only by operators or web maintainers after initial content review. GitHub Issue Type is optional for humans and is not required by the automation.
 
 The automation creates `draft: false` content because Draft PR state controls publication before merge. Automatically generated content must include `sourceIssue`.
 
