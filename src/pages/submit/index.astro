@@ -1,0 +1,201 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const tags = [
+  "월간기록",
+  "스터디",
+  "프로젝트",
+  "행사",
+  "회고",
+  "Python",
+  "JavaScript",
+  "HTML/CSS",
+  "React",
+  "아두이노",
+  "AI",
+  "웹",
+  "앱",
+  "게임",
+];
+---
+
+<BaseLayout title="글 작성" description="coderix 홈페이지에 올릴 글을 작성합니다.">
+  <section class="page-head">
+    <div class="container">
+      <h1>글 작성</h1>
+      <p>내용을 적으면 GitHub 이슈 작성 화면이 자동으로 채워집니다.</p>
+    </div>
+  </section>
+
+  <section class="section submit-section">
+    <div class="container submit-grid">
+      <form class="submit-form" id="submit-form">
+        <fieldset>
+          <legend>글 종류</legend>
+          <div class="segmented">
+            <label><input type="radio" name="kind" value="activity" checked /> 활동 기록</label>
+            <label><input type="radio" name="kind" value="dev" /> 개발 글</label>
+            <label><input type="radio" name="kind" value="project" /> 프로젝트</label>
+          </div>
+        </fieldset>
+
+        <label>
+          제목
+          <input name="title" required placeholder="React 상태 관리 정리" />
+        </label>
+
+        <label>
+          요약
+          <textarea name="description" required rows="3" placeholder="한 문장으로 짧게 적어주세요."></textarea>
+        </label>
+
+        <div class="form-row">
+          <label>
+            날짜
+            <input name="date" type="date" required />
+          </label>
+          <label>
+            작성자
+            <input name="authors" required placeholder="홍길동, 김철수" />
+          </label>
+        </div>
+
+        <fieldset>
+          <legend>추천 태그</legend>
+          <div class="checkbox-grid">
+            {tags.map((tag) => (
+              <label><input type="checkbox" name="tags" value={tag} /> {tag}</label>
+            ))}
+          </div>
+        </fieldset>
+
+        <label class="optional-field" data-kind-field="dev">
+          기술 수준 / 대상 독자
+          <input name="audience" placeholder="처음 배우는 부원, Python 입문자" />
+        </label>
+
+        <label class="optional-field" data-kind-field="project">
+          프로젝트 링크
+          <textarea
+            name="projectLinks"
+            rows="4"
+            placeholder={`GitHub - https://github.com/jyhs-coderix/example\n시연 - https://example.com`}
+          ></textarea>
+        </label>
+
+        <label>
+          본문
+          <textarea
+            name="body"
+            required
+            rows="10"
+            placeholder={`무엇을 했는지, 무엇을 만들었는지, 배운 점을 편하게 적어주세요.\n\n사진은 GitHub 화면이 열린 뒤 본문에 끌어다 놓으면 됩니다.`}
+          ></textarea>
+        </label>
+
+        <fieldset>
+          <legend>공개 확인</legend>
+          <div class="check-stack">
+            <label><input type="checkbox" required /> 공개되면 안 되는 개인정보가 없습니다.</label>
+            <label><input type="checkbox" required /> 사진을 올린다면 사진 속 인물의 공개 동의를 받았습니다.</label>
+            <label><input type="checkbox" required /> 제출한 내용이 동아리 홈페이지에 공개될 수 있음을 이해했습니다.</label>
+          </div>
+        </fieldset>
+
+        <button class="button primary" type="submit">GitHub에서 작성 계속하기</button>
+      </form>
+
+      <aside class="submit-panel">
+        <h2>작성 흐름</h2>
+        <ol>
+          <li>이 페이지에서 글 내용을 적습니다.</li>
+          <li>버튼을 누르면 GitHub 이슈 화면이 채워집니다.</li>
+          <li>사진이 있으면 GitHub 본문에 끌어다 놓습니다.</li>
+          <li><code>Create</code>를 눌러 제출합니다.</li>
+        </ol>
+        <p>운영진은 제출된 이슈를 확인한 뒤 <code>초안 생성</code> 라벨만 붙이면 됩니다.</p>
+      </aside>
+    </div>
+  </section>
+
+  <script is:inline>
+    const form = document.querySelector("#submit-form");
+    const optionalFields = [...document.querySelectorAll("[data-kind-field]")];
+    const repoIssueUrl = "https://github.com/jyhs-coderix/jyhs-coderix.github.io/issues/new";
+    const kindLabels = {
+      activity: "활동 기록",
+      dev: "개발 글",
+      project: "프로젝트",
+    };
+
+    const setToday = () => {
+      const dateInput = form?.querySelector('input[name="date"]');
+      if (dateInput && !dateInput.value) {
+        const now = new Date();
+        const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 60_000);
+        dateInput.value = localDate.toISOString().slice(0, 10);
+      }
+    };
+
+    const updateOptionalFields = () => {
+      const kind = new FormData(form).get("kind");
+      optionalFields.forEach((field) => {
+        field.hidden = field.dataset.kindField !== kind;
+      });
+    };
+
+    const checkedLines = (items) => {
+      if (!items.length) return "_선택 안 함_";
+      return items.map((item) => `- [x] ${item}`).join("\n");
+    };
+
+    const issueBody = (data) => {
+      const tagLines = checkedLines(data.getAll("tags"));
+      const blocks = [
+        ["제목", data.get("title")],
+        ["요약", data.get("description")],
+        ["날짜", data.get("date")],
+        ["작성자", data.get("authors")],
+        ["추천 태그", tagLines],
+      ];
+
+      if (data.get("kind") === "dev" && data.get("audience")) {
+        blocks.push(["기술 수준 / 대상 독자", data.get("audience")]);
+      }
+
+      if (data.get("kind") === "project" && data.get("projectLinks")) {
+        blocks.push(["프로젝트 링크", data.get("projectLinks")]);
+      }
+
+      blocks.push(
+        ["본문", data.get("body")],
+        ["이미지 첨부", "사진이 있으면 이 GitHub 본문에 끌어다 놓거나 붙여넣으세요."],
+        [
+          "공개 확인",
+          [
+            "- [x] 공개되면 안 되는 개인정보가 없습니다.",
+            "- [x] 사진을 올린다면 사진 속 인물의 공개 동의를 받았습니다.",
+            "- [x] 제출한 내용이 동아리 홈페이지에 공개될 수 있음을 이해했습니다.",
+          ].join("\n"),
+        ],
+      );
+
+      return blocks.map(([heading, value]) => `### ${heading}\n${value}`).join("\n\n");
+    };
+
+    form?.addEventListener("change", updateOptionalFields);
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      const kind = data.get("kind");
+      const title = `[${kindLabels[kind]}] ${data.get("title")}`;
+      const url = new URL(repoIssueUrl);
+      url.searchParams.set("title", title);
+      url.searchParams.set("body", issueBody(data));
+      window.location.href = url.toString();
+    });
+
+    setToday();
+    updateOptionalFields();
+  </script>
+</BaseLayout>

@@ -9,7 +9,7 @@ Primary goal:
 - Club portfolio and activity archive
 - Korean-only content
 - Static site hosted on GitHub Pages
-- GitHub Issue Form based submission workflow with Markdown output
+- Site writing page based submission workflow with GitHub issue Markdown output
 - Comments for posts through Giscus
 
 Deployment target:
@@ -377,7 +377,7 @@ There is no required gallery section in the first version.
 Default member writing workflow:
 
 ```txt
-member submits GitHub Issue Form
+member writes through `/submit/`
 -> operator reviews issue
 -> operator applies 초안 생성 label
 -> GitHub Actions creates Markdown and downloads GitHub issue images
@@ -387,11 +387,11 @@ member submits GitHub Issue Form
 -> GitHub Pages deploys from main
 ```
 
-Issue Forms:
+Writing categories:
 
-- `활동 기록 제보`
-- `개발 글 제보`
-- `프로젝트 제보`
+- `활동 기록`
+- `개발 글`
+- `프로젝트`
 
 Content categories:
 
@@ -401,7 +401,7 @@ Content categories:
 프로젝트
 ```
 
-Issue Forms set the matching title prefix, for example `[개발 글]`.
+The `/submit/` page opens a GitHub issue with the matching title prefix, for example `[개발 글]`.
 
 Automation label:
 
@@ -435,11 +435,11 @@ Image automation rules:
 
 Project links:
 
-- Issue Form accepts links as `label - URL`, one per line
+- The writing page accepts links as `label - URL`, one per line
 - Automation converts project links to `links`
 - Maximum 5 links per project
 
-Simplified Issue Form fields:
+Simplified writing fields:
 
 - Activity: `제목`, `요약`, `날짜`, `작성자`, `추천 태그`, `본문`, `이미지 첨부`, `공개 확인`
 - Development post: `제목`, `요약`, `날짜`, `작성자`, `추천 태그`, `기술 수준 / 대상 독자`, `본문`, `이미지 첨부`, `공개 확인`
