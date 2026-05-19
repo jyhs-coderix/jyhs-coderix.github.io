@@ -17,7 +17,26 @@ npm run build
 
 ## 글 작성
 
-공개 샘플 글은 두지 않습니다. 새 글을 작성할 때는 `templates/`의 파일을 복사해서 `src/content/posts/` 아래에 넣습니다.
+일반 부원은 GitHub Issue Form으로 글 재료를 제출합니다.
+
+- `활동 기록 제보`
+- `개발 글 제보`
+- `프로젝트 제보`
+
+운영진이 내용을 확인한 뒤 이슈에 `status: draft-requested` 라벨을 붙이면 GitHub Actions가 글 파일과 첨부 이미지를 만들고 Draft PR을 생성합니다. PR에서 제목, 본문, 태그, 사진 공개 동의, 빌드 통과 여부를 확인한 뒤 merge합니다.
+
+자동화용 라벨:
+
+```txt
+type: activity
+type: dev
+type: project
+status: draft-requested
+```
+
+자동 PR 생성 workflow가 PR 빌드까지 자연스럽게 이어지게 하려면 repository secret `DRAFT_PR_TOKEN`을 설정하는 것을 권장합니다. 없으면 기본 `GITHUB_TOKEN`으로 동작하지만, GitHub 설정에 따라 PR 생성 후 별도 pull request workflow가 자동 실행되지 않을 수 있습니다.
+
+운영진이 직접 글을 작성할 때는 `templates/`의 파일을 복사해서 `src/content/posts/` 아래에 넣습니다.
 
 권장 위치:
 
@@ -37,26 +56,38 @@ src/content/posts/notice/some-notice.md
 
 ## 프로젝트 작성
 
-새 프로젝트는 `templates/project.md`를 복사해서 `src/content/projects/` 아래에 넣습니다.
+새 프로젝트는 Issue Form으로 제보하거나, 운영진이 `templates/project.md`를 복사해서 `src/content/projects/` 아래에 넣습니다.
 
 ```txt
 src/content/projects/project-name.md
 ```
 
+프로젝트 링크는 최대 5개까지 `links` 배열로 관리합니다.
+
+```yaml
+links:
+  - label: "GitHub"
+    url: "https://github.com/jyhs-coderix/example"
+  - label: "시연"
+    url: "https://example.com"
+```
+
 ## 이미지
 
-이미지는 `public/images/...` 아래에 저장합니다.
+이미지는 `public/images/...` 아래에 저장합니다. Issue Form에 첨부한 이미지는 자동 초안 생성 시 글 단위 폴더로 저장됩니다.
 
 예시:
 
 ```txt
-public/images/posts/activity/2026-05/photo-1.jpg
+public/images/posts/activity/2026-05/2026-05-issue-12/image-1.jpg
+public/images/posts/dev/2026-05-15-issue-13/image-1.jpg
+public/images/projects/2026-05-15-issue-15/image-1.jpg
 ```
 
 Markdown에서 사용할 때:
 
 ```md
-![5월 활동 사진](/images/posts/activity/2026-05/photo-1.jpg)
+![5월 활동 사진](/images/posts/activity/2026-05/2026-05-issue-12/image-1.jpg)
 ```
 
 ## 댓글
@@ -74,4 +105,3 @@ PUBLIC_GISCUS_CATEGORY
 ## 배포
 
 `main` 브랜치에 merge되면 GitHub Actions가 Astro를 빌드하고 GitHub Pages에 배포합니다.
-

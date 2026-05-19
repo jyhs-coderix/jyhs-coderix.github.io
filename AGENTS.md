@@ -115,11 +115,24 @@ Projects:
 ```yaml
 title: "프로젝트 이름"
 description: "프로젝트 설명"
-github: "https://github.com/..."
 date: "YYYY-MM-DD"
+authors: ["작성자"]
+tags: ["프로젝트"]
+links:
+  - label: "GitHub"
+    url: "https://github.com/..."
 ```
 
 Dates in frontmatter use `YYYY-MM-DD`. Public date display is `YYYY.MM.DD`.
+
+Automatically generated content may include:
+
+```yaml
+draft: false
+sourceIssue: 12
+```
+
+`sourceIssue` is optional for hand-written content, but required for content generated from Issue Forms.
 
 ## Routing
 
@@ -185,13 +198,15 @@ Store images under `public/images/...`.
 Recommended shape:
 
 ```txt
-public/images/posts/activity/2026-05/photo-1.jpg
+public/images/posts/activity/2026-05/2026-05-issue-12/image-1.jpg
+public/images/posts/dev/2026-05-15-issue-13/image-1.jpg
+public/images/projects/2026-05-15-issue-15/image-1.jpg
 ```
 
 Markdown path:
 
 ```md
-![설명](/images/posts/activity/2026-05/photo-1.jpg)
+![설명](/images/posts/activity/2026-05/2026-05-issue-12/image-1.jpg)
 ```
 
 ## Deployment Notes
@@ -205,4 +220,3 @@ site: "https://jyhs-coderix.github.io"
 ```
 
 Do not change this to a project-site `/coderix` base unless the repository or deployment target changes.
-

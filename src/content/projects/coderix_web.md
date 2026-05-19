@@ -1,13 +1,18 @@
 ---
 title: "코드릭스 웹사이트 제작"
 description: "코드릭스 동아리의 공식 아카이브 홈페이지를 제작했습니다."
-github: "https://github.com/jyhs-coderix/jyhs-coderix.github.io"
 date: "2026-05-15"
+authors: []
+tags: ["프로젝트", "웹", "Astro"]
+links:
+  - label: "GitHub"
+    url: "https://github.com/jyhs-coderix/jyhs-coderix.github.io"
+draft: false
 ---
 
 ## 소개
 
-이 웹사이트는 동아리의 활동 기록, 개발 굴, 공지, 프로젝트를 한곳에 모아두기 위해 제작한 공식 아카이브 사이트입니다.
+이 웹사이트는 동아리의 활동 기록, 개발 글, 공지, 프로젝트를 한곳에 모아두기 위해 제작한 공식 아카이브 사이트입니다.
 
 ## 주요 기능
 
