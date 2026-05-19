@@ -63,9 +63,7 @@ function getIssueContentType(issue) {
   const prefix = Object.keys(TITLE_PREFIX_TYPES).find((candidate) => title.startsWith(candidate));
   if (prefix) return TITLE_PREFIX_TYPES[prefix];
 
-  throw new Error(
-    `Issue #${issue.number} needs one title prefix or issue type: ${Object.keys(TITLE_PREFIX_TYPES).join(", ")}.`,
-  );
+  throw new Error(`Issue #${issue.number} needs one title prefix: ${Object.keys(TITLE_PREFIX_TYPES).join(", ")}.`);
 }
 
 async function createDraft(contentType, issue, sections) {
@@ -268,7 +266,6 @@ function parseCheckedItems(value) {
   return value
     .split("\n")
     .map((line) => line.match(/^-\s+\[[xX]\]\s+(.+)$/)?.[1]?.trim())
-    .map((item) => item?.replace(/\s+\([a-z0-9-]+\)$/i, "").trim())
     .filter(Boolean);
 }
 
