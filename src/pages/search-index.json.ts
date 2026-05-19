@@ -1,5 +1,6 @@
 import {
   getAuthors,
+  getProjectAuthors,
   getPostUrl,
   getProjectUrl,
   getSortedPosts,
@@ -27,8 +28,8 @@ export async function GET() {
       description: project.data.description,
       href: getProjectUrl(project),
       date: project.data.date.toISOString(),
-      tags: [],
-      authors: [],
+      tags: project.data.tags,
+      authors: getProjectAuthors(project),
       body: "body" in project ? project.body : "",
     })),
   ];
@@ -37,4 +38,3 @@ export async function GET() {
     headers: { "Content-Type": "application/json; charset=utf-8" },
   });
 }
-

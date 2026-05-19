@@ -1,0 +1,39 @@
+name: Create Draft PR From Issue
+
+on:
+  issues:
+    types: [labeled]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Issue number to convert into a draft PR
+        required: true
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  create-draft:
+    if: "${{ github.event_name == 'workflow_dispatch' || github.event.label.name == 'status: draft-requested' }}"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create draft PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.DRAFT_PR_TOKEN || github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number || inputs.issue_number }}
+        run: node scripts/create-draft-pr-from-issue.mjs

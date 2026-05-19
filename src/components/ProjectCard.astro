@@ -1,5 +1,5 @@
 ---
-import { formatDate, getProjectUrl } from "@/lib/content";
+import { formatDate, getProjectAuthors, getProjectUrl } from "@/lib/content";
 import type { Project } from "@/lib/content";
 
 interface Props {
@@ -7,17 +7,24 @@ interface Props {
 }
 
 const { project } = Astro.props;
+const authors = getProjectAuthors(project);
 ---
 
 <article class="card">
   <div class="meta">
     <span>{formatDate(project.data.date)}</span>
     <span>프로젝트</span>
+    {authors.length > 0 && <span>{authors.join(", ")}</span>}
   </div>
   <h3><a href={getProjectUrl(project)}>{project.data.title}</a></h3>
   <p>{project.data.description}</p>
-  <div class="tag-list">
-    <a class="tag" href={project.data.github} target="_blank" rel="noreferrer">GitHub</a>
-  </div>
+  {
+    project.data.links.length > 0 && (
+      <div class="tag-list">
+        {project.data.links.map((link) => (
+          <a class="tag" href={link.url} target="_blank" rel="noreferrer">{link.label}</a>
+        ))}
+      </div>
+    )
+  }
 </article>
-

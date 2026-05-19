@@ -6,6 +6,7 @@ date: "2026-05-15"
 author: "홍길동"
 tags: ["태그"]
 comments: true
+draft: false
 ---
 
 ## 개요
@@ -13,4 +14,3 @@ comments: true
 ## 내용
 
 ## 정리
-

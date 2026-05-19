@@ -6,6 +6,7 @@ date: "2026-05-31"
 authors: ["홍길동", "김철수"]
 tags: ["월간기록"]
 comments: true
+draft: false
 ---
 
 ## 이번 달 요약
@@ -17,4 +18,3 @@ comments: true
 ## 기억할 점
 
 ## 다음 달 계획
-

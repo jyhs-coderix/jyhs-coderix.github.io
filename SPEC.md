@@ -9,7 +9,7 @@ Primary goal:
 - Club portfolio and activity archive
 - Korean-only content
 - Static site hosted on GitHub Pages
-- Markdown-based writing workflow
+- GitHub Issue Form based submission workflow with Markdown output
 - Comments for posts through Giscus
 
 Deployment target:
@@ -64,6 +64,8 @@ date: "2026-05-31"
 authors: ["홍길동", "김철수"]
 tags: ["월간기록"]
 comments: true
+draft: false
+sourceIssue: 12
 ---
 
 ## 이번 달 요약
@@ -82,6 +84,7 @@ Activity records:
 - Allow multiple authors through `authors`
 - Have comments enabled by default
 - May include images anywhere in the body
+- May include optional `sourceIssue` for the original submission issue
 
 ### Development Posts
 
@@ -96,6 +99,8 @@ date: "2026-05-15"
 author: "홍길동"
 tags: ["React"]
 comments: true
+draft: false
+sourceIssue: 13
 ---
 ```
 
@@ -103,6 +108,8 @@ Development posts:
 
 - Require `author`
 - Have comments enabled by default
+- May include `authors` if there are multiple writers
+- May include optional `sourceIssue` for the original submission issue
 
 ### Notices
 
@@ -134,8 +141,16 @@ Project cards use the minimum information set:
 ---
 title: "급식 알림 봇"
 description: "학교 급식 정보를 알려주는 Discord 봇"
-github: "https://github.com/..."
 date: "2026-05-15"
+authors: ["홍길동", "김철수"]
+tags: ["프로젝트", "Python"]
+links:
+  - label: "GitHub"
+    url: "https://github.com/..."
+  - label: "시연"
+    url: "https://example.com"
+draft: false
+sourceIssue: 15
 ---
 ```
 
@@ -144,7 +159,10 @@ Projects:
 - Have list pages and detail pages
 - Detail body is optional
 - Are sorted by newest first
-- Each project can link to its own GitHub repository
+- Project links are optional
+- Each project can include up to 5 links through `links`
+- Project links can point to GitHub, demos, videos, documents, slides, or other project resources
+- May include optional `sourceIssue` for the original submission issue
 
 No member page is included in the first version.
 
@@ -339,14 +357,15 @@ Images are stored in the repository under `public/images/...`.
 Recommended path shape:
 
 ```txt
-public/images/posts/activity/2026-05/photo-1.jpg
-public/images/posts/activity/2026-05/photo-2.jpg
+public/images/posts/activity/2026-05/2026-05-issue-12/image-1.jpg
+public/images/posts/dev/2026-05-15-issue-13/image-1.jpg
+public/images/projects/2026-05-15-issue-15/image-1.jpg
 ```
 
 Markdown usage:
 
 ```md
-![5월 활동 사진](/images/posts/activity/2026-05/photo-1.jpg)
+![5월 활동 사진](/images/posts/activity/2026-05/2026-05-issue-12/image-1.jpg)
 ```
 
 Image placement in monthly activity records is free-form.
@@ -355,16 +374,68 @@ There is no required gallery section in the first version.
 
 ## Writing Workflow
 
-Initial writing workflow:
+Default member writing workflow:
 
-- Members write Markdown through GitHub web UI or local edits
-- Changes are submitted through pull requests
-- `main` should not be used for direct writes by regular members
-- Club operators review and merge PRs
+```txt
+member submits GitHub Issue Form
+-> operator reviews issue
+-> operator applies status: draft-requested label
+-> GitHub Actions creates Markdown and downloads GitHub issue images
+-> GitHub Actions opens a Draft PR
+-> operators review the Draft PR checklist
+-> PR is marked ready, approved, merged
+-> GitHub Pages deploys from main
+```
 
-No separate strict frontmatter CI validation in the first version.
+Issue Forms:
 
-Astro Content Collections may still provide basic build-time structure checks, but strict operational rules are reviewed by humans.
+- `활동 기록 제보`
+- `개발 글 제보`
+- `프로젝트 제보`
+
+Automation labels:
+
+```txt
+type: activity
+type: dev
+type: project
+status: draft-requested
+```
+
+The `type:*` label is attached by the Issue Form. The `status: draft-requested` label is attached only by operators or web maintainers after initial content review.
+
+The automation creates `draft: false` content because Draft PR state controls publication before merge. Automatically generated content must include `sourceIssue`.
+
+Draft PR checklist:
+
+- Title and description are appropriate for the public site
+- Date matches the actual activity or writing date
+- Author names are safe to publish
+- Body has no personal or sensitive information
+- Photo publication and portrait consent are confirmed
+- Images render from repository paths
+- Tags are accurate and not excessive
+- Build passes
+- Content is safe to publish after merge
+
+Image automation rules:
+
+- Only GitHub issue image attachments are downloaded
+- External image URLs are not downloaded automatically
+- Up to 10 images per issue
+- Up to 10 MiB per image
+- Supported formats: PNG, JPG, GIF, WebP
+
+Project links:
+
+- Issue Form accepts links as `label - URL`, one per line
+- Automation converts project links to `links`
+- Maximum 5 links per project
+
+GitHub token note:
+
+- `DRAFT_PR_TOKEN` repository secret is recommended for automatic PR creation when branch protection requires pull request workflows.
+- Without `DRAFT_PR_TOKEN`, the workflow uses `GITHUB_TOKEN`; this still creates the Draft PR, but GitHub may not trigger follow-up workflows caused by that token.
 
 ## Templates
 
@@ -410,4 +481,3 @@ Decisions intentionally deferred:
 - Strict custom frontmatter linting
 - Advanced image gallery component
 - GitHub organization home link
-

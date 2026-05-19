@@ -1,0 +1,123 @@
+name: 프로젝트 제보
+description: 동아리 프로젝트와 결과물을 홈페이지 프로젝트로 제보합니다.
+title: "[프로젝트] "
+labels: ["type: project"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        GitHub 저장소가 없어도 괜찮습니다. 링크가 있다면 최대 5개까지 적을 수 있습니다.
+  - type: input
+    id: title
+    attributes:
+      label: 제목
+      placeholder: 급식 알림 봇
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: 요약
+      description: 목록과 검색에 보일 한 문장 설명입니다.
+      placeholder: 학교 급식 정보를 알려주는 Discord 봇입니다.
+    validations:
+      required: true
+  - type: input
+    id: date
+    attributes:
+      label: 날짜
+      description: YYYY-MM-DD 형식으로 적어주세요.
+      placeholder: 2026-05-15
+    validations:
+      required: true
+  - type: input
+    id: authors
+    attributes:
+      label: 작성자
+      description: 여러 명이면 쉼표로 구분하세요.
+      placeholder: 홍길동, 김철수
+    validations:
+      required: true
+  - type: checkboxes
+    id: recommended-tags
+    attributes:
+      label: 추천 태그
+      options:
+        - label: 월간기록
+        - label: 스터디
+        - label: 프로젝트
+        - label: 행사
+        - label: 회고
+        - label: Python
+        - label: JavaScript
+        - label: HTML/CSS
+        - label: React
+        - label: 아두이노
+        - label: AI
+        - label: 웹
+        - label: 앱
+        - label: 게임
+  - type: input
+    id: custom-tags
+    attributes:
+      label: 기타 태그
+      description: 추천 태그에 없으면 쉼표로 구분해서 적어주세요.
+      placeholder: Discord, 봇
+  - type: input
+    id: audience
+    attributes:
+      label: 기술 수준 / 대상 독자
+      description: 선택 항목입니다.
+      placeholder: 처음 만든 팀 프로젝트, 웹 입문자
+  - type: textarea
+    id: project-links
+    attributes:
+      label: 프로젝트 링크
+      description: 최대 5개입니다. `라벨 - URL` 형식으로 한 줄에 하나씩 적어주세요.
+      placeholder: |
+        GitHub - https://github.com/jyhs-coderix/example
+        시연 - https://example.com
+        발표 자료 - https://docs.google.com/...
+  - type: textarea
+    id: intro
+    attributes:
+      label: 소개
+      description: 어떤 프로젝트인지 적어주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: features
+    attributes:
+      label: 주요 기능
+      description: 프로젝트의 주요 기능을 적어주세요.
+  - type: textarea
+    id: tech-stack
+    attributes:
+      label: 사용 기술
+      description: 사용한 언어, 프레임워크, 도구를 적어주세요.
+  - type: textarea
+    id: process
+    attributes:
+      label: 제작 과정
+      description: 어떻게 만들었는지 적어주세요.
+  - type: textarea
+    id: learned
+    attributes:
+      label: 배운 점
+      description: 만들면서 배운 점이나 다음에 개선할 점을 적어주세요.
+  - type: textarea
+    id: images
+    attributes:
+      label: 이미지 첨부
+      description: 사진을 이 칸에 끌어다 놓거나 붙여넣으세요. 운영진이 게시 전 확인합니다.
+  - type: checkboxes
+    id: public-check
+    attributes:
+      label: 공개 확인
+      options:
+        - label: 이 글에 공개되면 안 되는 개인정보가 없음을 확인했습니다.
+          required: true
+        - label: 첨부한 사진이 있다면 사진 속 인물의 공개 동의를 받았습니다.
+          required: true
+        - label: 제출한 내용이 동아리 홈페이지에 공개될 수 있음을 이해했습니다.
+          required: true

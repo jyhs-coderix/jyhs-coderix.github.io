@@ -1,0 +1,114 @@
+name: 개발 글 제보
+description: 기술 글, 프로젝트 개발기, 문제 해결 기록을 홈페이지 글로 제보합니다.
+title: "[개발 글] "
+labels: ["type: dev"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        완성된 글처럼 쓰지 않아도 됩니다. 질문에 답하면 운영진이 홈페이지 글 초안으로 정리합니다.
+  - type: input
+    id: title
+    attributes:
+      label: 제목
+      placeholder: React 상태 관리 정리
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: 요약
+      description: 목록과 검색에 보일 한 문장 설명입니다.
+      placeholder: 상태 관리 패턴을 정리한 글입니다.
+    validations:
+      required: true
+  - type: input
+    id: date
+    attributes:
+      label: 날짜
+      description: YYYY-MM-DD 형식으로 적어주세요.
+      placeholder: 2026-05-15
+    validations:
+      required: true
+  - type: input
+    id: authors
+    attributes:
+      label: 작성자
+      description: 한 명을 권장합니다. 여러 명이면 쉼표로 구분하세요.
+      placeholder: 홍길동
+    validations:
+      required: true
+  - type: checkboxes
+    id: recommended-tags
+    attributes:
+      label: 추천 태그
+      options:
+        - label: 월간기록
+        - label: 스터디
+        - label: 프로젝트
+        - label: 행사
+        - label: 회고
+        - label: Python
+        - label: JavaScript
+        - label: HTML/CSS
+        - label: React
+        - label: 아두이노
+        - label: AI
+        - label: 웹
+        - label: 앱
+        - label: 게임
+  - type: input
+    id: custom-tags
+    attributes:
+      label: 기타 태그
+      description: 추천 태그에 없으면 쉼표로 구분해서 적어주세요.
+      placeholder: 알고리즘, 오류 해결
+  - type: input
+    id: audience
+    attributes:
+      label: 기술 수준 / 대상 독자
+      description: 선택 항목입니다.
+      placeholder: 처음 배우는 부원, Python 입문자
+  - type: textarea
+    id: overview
+    attributes:
+      label: 개요
+      description: 이 글에서 다루는 내용을 적어주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: 문제 또는 목표
+      description: 해결하려던 문제나 배우려던 목표를 적어주세요.
+  - type: textarea
+    id: process
+    attributes:
+      label: 해결 과정
+      description: 어떤 순서로 시도했는지 적어주세요.
+  - type: textarea
+    id: learned
+    attributes:
+      label: 배운 점
+      description: 새로 알게 된 점이나 다음에 조심할 점을 적어주세요.
+  - type: textarea
+    id: conclusion
+    attributes:
+      label: 정리
+      description: 글의 마무리 내용을 적어주세요.
+  - type: textarea
+    id: images
+    attributes:
+      label: 이미지 첨부
+      description: 사진을 이 칸에 끌어다 놓거나 붙여넣으세요. 운영진이 게시 전 확인합니다.
+  - type: checkboxes
+    id: public-check
+    attributes:
+      label: 공개 확인
+      options:
+        - label: 이 글에 공개되면 안 되는 개인정보가 없음을 확인했습니다.
+          required: true
+        - label: 첨부한 사진이 있다면 사진 속 인물의 공개 동의를 받았습니다.
+          required: true
+        - label: 제출한 내용이 동아리 홈페이지에 공개될 수 있음을 이해했습니다.
+          required: true

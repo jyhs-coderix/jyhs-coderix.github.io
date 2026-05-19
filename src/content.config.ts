@@ -14,7 +14,13 @@ const posts = defineCollection({
     tags: z.array(z.string()).default([]),
     comments: z.boolean().optional(),
     draft: z.boolean().default(false),
+    sourceIssue: z.number().int().positive().optional(),
   }),
+});
+
+const projectLink = z.object({
+  label: z.string(),
+  url: z.url(),
 });
 
 const projects = defineCollection({
@@ -22,9 +28,12 @@ const projects = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    github: z.url(),
+    authors: z.array(z.string()).default([]),
+    tags: z.array(z.string()).default([]),
+    links: z.array(projectLink).max(5).default([]),
     date: z.coerce.date(),
     draft: z.boolean().default(false),
+    sourceIssue: z.number().int().positive().optional(),
   }),
 });
 

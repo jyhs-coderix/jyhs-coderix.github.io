@@ -51,6 +51,10 @@ export function getAuthors(post: Post) {
   return [];
 }
 
+export function getProjectAuthors(project: Project) {
+  return project.data.authors ?? [];
+}
+
 export async function getSortedPosts() {
   const posts = await getCollection("posts");
   return posts

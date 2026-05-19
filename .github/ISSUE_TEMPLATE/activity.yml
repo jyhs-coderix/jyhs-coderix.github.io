@@ -1,0 +1,108 @@
+name: 활동 기록 제보
+description: 동아리 활동, 스터디, 행사, 회고를 홈페이지 글로 제보합니다.
+title: "[활동 기록] "
+labels: ["type: activity"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        코딩을 처음 해도 괜찮습니다. 아래 질문에 답하면 운영진이 홈페이지 글 초안으로 정리합니다.
+  - type: input
+    id: title
+    attributes:
+      label: 제목
+      placeholder: 2026년 5월 활동 기록
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: 요약
+      description: 목록과 검색에 보일 한 문장 설명입니다.
+      placeholder: coderix의 2026년 5월 활동을 정리했습니다.
+    validations:
+      required: true
+  - type: input
+    id: date
+    attributes:
+      label: 날짜
+      description: YYYY-MM-DD 형식으로 적어주세요.
+      placeholder: 2026-05-31
+    validations:
+      required: true
+  - type: input
+    id: authors
+    attributes:
+      label: 작성자
+      description: 여러 명이면 쉼표로 구분하세요.
+      placeholder: 홍길동, 김철수
+    validations:
+      required: true
+  - type: checkboxes
+    id: recommended-tags
+    attributes:
+      label: 추천 태그
+      options:
+        - label: 월간기록
+        - label: 스터디
+        - label: 프로젝트
+        - label: 행사
+        - label: 회고
+        - label: Python
+        - label: JavaScript
+        - label: HTML/CSS
+        - label: React
+        - label: 아두이노
+        - label: AI
+        - label: 웹
+        - label: 앱
+        - label: 게임
+  - type: input
+    id: custom-tags
+    attributes:
+      label: 기타 태그
+      description: 추천 태그에 없으면 쉼표로 구분해서 적어주세요.
+      placeholder: 알고리즘, 발표
+  - type: textarea
+    id: summary
+    attributes:
+      label: 이번 활동 요약
+      description: 이번 활동에서 가장 중요한 내용을 적어주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: activities
+    attributes:
+      label: 진행한 활동
+      description: 어떤 활동을 했는지 적어주세요.
+  - type: textarea
+    id: outputs
+    attributes:
+      label: 만든 것 / 배운 것
+      description: 만든 결과물이나 새로 배운 내용을 적어주세요.
+  - type: textarea
+    id: memories
+    attributes:
+      label: 기억할 점
+      description: 좋았던 점, 아쉬웠던 점, 다음에 참고할 점을 적어주세요.
+  - type: textarea
+    id: next-plan
+    attributes:
+      label: 다음 계획
+      description: 다음 활동이나 이어서 할 일을 적어주세요.
+  - type: textarea
+    id: images
+    attributes:
+      label: 이미지 첨부
+      description: 사진을 이 칸에 끌어다 놓거나 붙여넣으세요. 운영진이 게시 전 확인합니다.
+  - type: checkboxes
+    id: public-check
+    attributes:
+      label: 공개 확인
+      options:
+        - label: 이 글에 공개되면 안 되는 개인정보가 없음을 확인했습니다.
+          required: true
+        - label: 첨부한 사진이 있다면 사진 속 인물의 공개 동의를 받았습니다.
+          required: true
+        - label: 제출한 내용이 동아리 홈페이지에 공개될 수 있음을 이해했습니다.
+          required: true
