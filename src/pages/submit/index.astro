@@ -6,7 +6,6 @@ const tags = [
   "스터디",
   "프로젝트",
   "행사",
-  "회고",
   "Python",
   "JavaScript",
   "HTML/CSS",
@@ -68,11 +67,6 @@ const tags = [
             ))}
           </div>
         </fieldset>
-
-        <label class="optional-field" data-kind-field="dev">
-          기술 수준 / 대상 독자
-          <input name="audience" placeholder="처음 배우는 부원, Python 입문자" />
-        </label>
 
         <label class="optional-field" data-kind-field="project">
           프로젝트 링크
@@ -158,10 +152,6 @@ const tags = [
         ["작성자", data.get("authors")],
         ["추천 태그", tagLines],
       ];
-
-      if (data.get("kind") === "dev" && data.get("audience")) {
-        blocks.push(["기술 수준 / 대상 독자", data.get("audience")]);
-      }
 
       if (data.get("kind") === "project" && data.get("projectLinks")) {
         blocks.push(["프로젝트 링크", data.get("projectLinks")]);

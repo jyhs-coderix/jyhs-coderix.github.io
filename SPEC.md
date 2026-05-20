@@ -442,7 +442,7 @@ Project links:
 Simplified writing fields:
 
 - Activity: `제목`, `요약`, `날짜`, `작성자`, `추천 태그`, `본문`, `이미지 첨부`, `공개 확인`
-- Development post: `제목`, `요약`, `날짜`, `작성자`, `추천 태그`, `기술 수준 / 대상 독자`, `본문`, `이미지 첨부`, `공개 확인`
+- Development post: `제목`, `요약`, `날짜`, `작성자`, `추천 태그`, `본문`, `이미지 첨부`, `공개 확인`
 - Project: `제목`, `요약`, `날짜`, `작성자`, `추천 태그`, `프로젝트 링크`, `본문`, `이미지 첨부`, `공개 확인`
 
 The automation reads `본문` as the primary body source. Operators can reshape that text into richer Markdown sections inside the generated Draft PR.
