@@ -309,10 +309,11 @@ function parseProjectLinks(value) {
   if (lines.length > 5) throw new Error("Project links are limited to 5.");
 
   return lines.map((line) => {
-    const urlMatch = line.match(/https?:\/\/\S+/);
+    const urlMatch = line.match(/(?:https?:\/\/|www\.|[a-z0-9-]+(?:\.[a-z0-9-]+)+\/)\S+/i);
     if (!urlMatch) throw new Error(`Project link needs a URL: ${line}`);
 
-    const url = urlMatch[0].replace(/[),.;]+$/, "");
+    const rawUrl = urlMatch[0].replace(/[),.;]+$/, "");
+    const url = /^https?:\/\//i.test(rawUrl) ? rawUrl : `https://${rawUrl}`;
     const rawLabel = line.slice(0, urlMatch.index).replace(/[-:–—\s]+$/, "").trim();
     const label = rawLabel || "링크";
 
